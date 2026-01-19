@@ -1,13 +1,19 @@
 // API Client for Choice Properties Backend - Using v2 endpoints
 import { getAuthToken } from "./auth-context";
 
-const API_BASE = typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
+import { supabase, initPromise } from "./supabase";
 
 interface ApiResponse<T> {
   data?: T;
   error?: string;
   success?: boolean;
 }
+
+const API_BASE = import.meta.env.VITE_SERVER_URL || "";
+
+// Initialize Supabase configuration for direct client-side fetching if backend is unavailable
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 async function apiCall<T>(
   endpoint: string,
@@ -44,7 +50,23 @@ async function apiCall<T>(
 
 // Properties API - Using v2 endpoints
 export const propertiesApi = {
-  getAll: (filters?: { propertyType?: string; city?: string; minPrice?: number; maxPrice?: number }) => {
+  getAll: async (filters?: { propertyType?: string; city?: string; minPrice?: number; maxPrice?: number }) => {
+    await initPromise;
+    if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+      console.log('[propertiesApi] Fetching directly from Supabase');
+      let query = supabase.from('properties').select('*');
+      if (filters?.propertyType) query = query.eq('property_type', filters.propertyType);
+      if (filters?.city) query = query.eq('city', filters.city);
+      const { data, error } = await query.order('created_at', { ascending: false });
+      if (error) throw error;
+      return { 
+        success: true, 
+        data: { 
+          properties: data,
+          pagination: { total: data.length, page: 1, limit: 100, totalPages: 1, hasNextPage: false, hasPrevPage: false }
+        } 
+      };
+    }
     const params = new URLSearchParams();
     if (filters?.propertyType) params.append("propertyType", filters.propertyType);
     if (filters?.city) params.append("city", filters.city);
@@ -53,7 +75,14 @@ export const propertiesApi = {
     
     return apiCall(`/api/v2/properties?${params.toString()}`);
   },
-  getById: (id: string) => apiCall(`/api/v2/properties/${id}`),
+  getById: async (id: string) => {
+    await initPromise;
+    if (supabase) {
+      const { data, error } = await supabase.from('properties').select('*, owner:users(*)').eq('id', id).single();
+      if (!error) return { success: true, data };
+    }
+    return apiCall(`/api/v2/properties/${id}`);
+  },
   create: (data: any) => apiCall("/api/v2/properties", { method: "POST", body: JSON.stringify(data) }),
   update: (id: string, data: any) => apiCall(`/api/v2/properties/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   delete: (id: string) => apiCall(`/api/v2/properties/${id}`, { method: "DELETE" }),
@@ -63,8 +92,22 @@ export const propertiesApi = {
 export const applicationsApi = {
   create: (data: any) => apiCall("/api/v2/applications", { method: "POST", body: JSON.stringify(data) }),
   getById: (id: string) => apiCall(`/api/v2/applications/${id}`),
-  getByUser: (userId: string) => apiCall(`/api/v2/applications/user/${userId}`),
-  getByProperty: (propertyId: string) => apiCall(`/api/v2/applications/property/${propertyId}`),
+  getByUser: async (userId: string) => {
+    await initPromise;
+    if (supabase) {
+      const { data, error } = await supabase.from('applications').select('*, property:properties(*)').eq('user_id', userId).order('created_at', { ascending: false });
+      if (!error) return { success: true, data };
+    }
+    return apiCall(`/api/v2/applications/user/${userId}`);
+  },
+  getByProperty: async (propertyId: string) => {
+    await initPromise;
+    if (supabase) {
+      const { data, error } = await supabase.from('applications').select('*, user:users(*)').eq('property_id', propertyId).order('created_at', { ascending: false });
+      if (!error) return { success: true, data };
+    }
+    return apiCall(`/api/v2/applications/property/${propertyId}`);
+  },
   update: (id: string, data: any) => apiCall(`/api/v2/applications/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   updateStatus: (id: string, status: string, reason?: string) => 
     apiCall(`/api/v2/applications/${id}/status`, { method: "PATCH", body: JSON.stringify({ status, reason }) }),

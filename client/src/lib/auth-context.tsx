@@ -44,30 +44,38 @@ const getDefaultRedirectForRole = (role: UserRole | null) => {
 
   const buildUserFromAuth = async (authUser: any): Promise<User> => {
     if (!supabase) throw new Error("Supabase not configured");
-    const { data } = await supabase
-    .from("users")
-    .select(`
-      role, 
-      full_name, 
-      phone, 
-      profile_image, 
-      bio, 
-      location, 
-      specialties, 
-      years_experience, 
-      total_sales, 
-      rating, 
-      review_count, 
-      license_number, 
-      license_verified, 
-      display_email, 
-      display_phone
-    `)
-    .eq("id", authUser.id)
-    .single();
+    
+    let profileData: any = null;
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select(`
+          role, 
+          full_name, 
+          phone, 
+          profile_image, 
+          bio, 
+          location, 
+          specialties, 
+          years_experience, 
+          total_sales, 
+          rating, 
+          review_count, 
+          license_number, 
+          license_verified, 
+          display_email, 
+          display_phone
+        `)
+        .eq("id", authUser.id)
+        .single();
+      
+      if (!error) profileData = data;
+    } catch (e) {
+      console.warn("[AUTH] Profile fetch failed, using metadata only");
+    }
 
   const role = normalizeRole(
-    data?.role ?? authUser.user_metadata?.role
+    profileData?.role ?? authUser.user_metadata?.role
   );
 
   return {
@@ -75,26 +83,26 @@ const getDefaultRedirectForRole = (role: UserRole | null) => {
     email: authUser.email ?? "",
     role,
     full_name:
-      data?.full_name ??
+      profileData?.full_name ??
       authUser.user_metadata?.full_name ??
       authUser.user_metadata?.name ??
       null,
-    phone: data?.phone ?? authUser.phone ?? null,
+    phone: profileData?.phone ?? authUser.phone ?? null,
     profile_image:
-      data?.profile_image ??
+      profileData?.profile_image ??
       authUser.user_metadata?.avatar_url ??
       null,
-    bio: data?.bio ?? null,
-    location: data?.location ?? null,
-    specialties: data?.specialties ?? null,
-    years_experience: data?.years_experience ?? null,
-    total_sales: data?.total_sales ?? null,
-    rating: data?.rating ?? null,
-    review_count: data?.review_count ?? null,
-    license_number: data?.license_number ?? null,
-    license_verified: data?.license_verified ?? null,
-    display_email: data?.display_email ?? null,
-    display_phone: data?.display_phone ?? null,
+    bio: profileData?.bio ?? null,
+    location: profileData?.location ?? null,
+    specialties: profileData?.specialties ?? null,
+    years_experience: profileData?.years_experience ?? null,
+    total_sales: profileData?.total_sales ?? null,
+    rating: profileData?.rating ?? null,
+    review_count: profileData?.review_count ?? null,
+    license_number: profileData?.license_number ?? null,
+    license_verified: profileData?.license_verified ?? null,
+    display_email: profileData?.display_email ?? null,
+    display_phone: profileData?.display_phone ?? null,
     created_at: authUser.created_at,
     updated_at: null,
     email_verified: !!authUser.email_confirmed_at,
