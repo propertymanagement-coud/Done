@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth, getAuthToken } from '@/lib/auth-context';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
 
 export interface OwnedProperty {
   id: string;
@@ -48,6 +49,23 @@ export function useOwnedProperties() {
       setLoading(true);
       setError(null);
       try {
+        // --- Netlify Compatibility Layer: Direct Supabase Fetch ---
+        // We check for the Supabase client and VITE env vars. 
+        // If they exist, we fetch directly to bypass the Express proxy which fails on Netlify.
+        if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+          const { data, error: sbError } = await supabase
+            .from('properties')
+            .select('*')
+            .eq('owner_id', user.id)
+            .order('created_at', { ascending: false });
+
+          if (sbError) throw sbError;
+          
+          setProperties(data || []);
+          return;
+        }
+
+        /* Legacy Express Fetch (Replit-only) */
         const token = await getAuthToken();
         const response = await fetch(
           `/api/v2/properties?ownerId=${user.id}`,

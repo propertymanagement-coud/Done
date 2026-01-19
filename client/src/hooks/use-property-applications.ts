@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth, getAuthToken } from '@/lib/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { supabase } from '@/lib/supabase';
 
 export interface PropertyApplication {
   id: string;
@@ -164,6 +165,28 @@ export function useOwnerApplications() {
   const { data: response, isLoading, error, refetch } = useQuery<ApplicationsResponse>({
     queryKey: ['/api/applications/owner'],
     queryFn: async () => {
+      // --- Netlify Compatibility Layer: Direct Supabase Fetch ---
+      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+        const { data: props } = await supabase
+          .from('properties')
+          .select('id')
+          .eq('owner_id', user.id);
+        
+        const propIds = props?.map(p => p.id) || [];
+        
+        if (propIds.length === 0) return { success: true, data: [], message: 'No applications found' };
+
+        const { data, error: sbError } = await supabase
+          .from('applications')
+          .select('*, user:users(*), property:properties(*)')
+          .in('property_id', propIds)
+          .order('created_at', { ascending: false });
+
+        if (sbError) throw sbError;
+        return { success: true, data: data || [], message: 'Applications fetched successfully' };
+      }
+
+      /* Legacy Express Fetch (Replit-only) */
       const token = await getAuthToken();
       const res = await fetch('/api/applications/owner', {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {},
