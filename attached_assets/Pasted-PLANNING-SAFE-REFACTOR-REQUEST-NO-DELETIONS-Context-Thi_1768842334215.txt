@@ -1,0 +1,74 @@
+PLANNING + SAFE REFACTOR REQUEST (NO DELETIONS)
+
+Context:
+This project currently fetches Owner Dashboard data (properties, counts, summaries)
+via Express API routes (e.g. /api/v2/properties). This works on Replit but fails
+on Netlify because Express does not run there.
+
+Goal:
+Refactor ONLY the Owner Dashboard data-fetching layer so that it queries Supabase
+DIRECTLY from the frontend using the Supabase client, while preserving all existing
+backend routes and logic for compatibility.
+
+IMPORTANT RULES (DO NOT BREAK THESE):
+- DO NOT delete any backend files, API routes, or services
+- DO NOT modify database schema or RLS policies
+- DO NOT refactor unrelated components
+- DO NOT change auth logic or session handling
+- DO NOT enable autonomous or sweeping refactors
+- Make changes incrementally and explicitly
+- If unsure, STOP and explain before acting
+
+Phase 1 — Audit (Read-Only):
+1. Locate all files responsible for Owner Dashboard data fetching
+   (likely in client/src/pages, client/src/components/dashboard, or hooks).
+2. List:
+   - Which components fetch owner properties
+   - Which API endpoints they call
+   - Which data fields are expected by the UI
+3. Confirm whether the dashboard depends on:
+   - /api/v2/properties
+   - /api/v2/dashboard
+   - or similar Express routes
+
+DO NOT MODIFY CODE in this phase.
+
+Phase 2 — Supabase Query Plan (No Code Yet):
+1. Design a frontend Supabase query that:
+   - Fetches properties owned by the logged-in user
+   - Uses auth.user().id (or equivalent) as owner_id
+   - Respects existing RLS
+2. Specify:
+   - Table(s) queried
+   - Fields selected
+   - Filters applied
+3. Confirm the returned data shape matches the existing dashboard UI expectations.
+
+STOP and WAIT for approval before writing code.
+
+Phase 3 — Safe Refactor (Frontend Only):
+1. Replace ONLY the dashboard fetch logic so that:
+   - It uses the Supabase client directly
+   - It no longer calls Express API routes
+2. Keep the UI structure unchanged.
+3. Preserve loading, error, and empty states.
+4. Do NOT remove existing API fetch code — comment it and label it
+   "Legacy Express Fetch (Replit-only)".
+
+Phase 4 — Compatibility & Verification:
+1. Confirm:
+   - Dashboard works on Replit
+   - Dashboard works on Netlify
+2. Verify:
+   - Owner sees only their properties
+   - No hardcoded or mocked data remains
+3. Log any remaining Express dependencies found.
+
+Final Requirement:
+At the end, summarize:
+- Files modified
+- What changed
+- What was intentionally NOT changed
+- Any future cleanup recommendations (DO NOT implement them)
+
+Proceed carefully and step-by-step.
