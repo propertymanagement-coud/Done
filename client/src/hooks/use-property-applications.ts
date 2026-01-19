@@ -166,7 +166,7 @@ export function useOwnerApplications() {
     queryKey: ['/api/applications/owner'],
     queryFn: async () => {
       // --- Netlify Compatibility Layer: Direct Supabase Fetch ---
-      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase && user) {
         const { data: props } = await supabase
           .from('properties')
           .select('id')
