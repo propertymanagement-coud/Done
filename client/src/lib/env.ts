@@ -98,10 +98,7 @@ export function validateSupabaseFrontendEnv(): { url: string; anonKey: string } 
  * Checks if Supabase is configured (without throwing).
  */
 export function isSupabaseConfigured(): boolean {
-  return !!(
-    import.meta.env.VITE_SUPABASE_URL && 
-    import.meta.env.VITE_SUPABASE_ANON_KEY
-  );
+  return true; // We fetch config from backend
 }
 
 /**

@@ -36,6 +36,12 @@ const ENV_VARIABLES: EnvConfig[] = [
     description: 'Supabase service role key (Project Settings > API > service_role)',
     category: 'supabase'
   },
+  {
+    key: 'SUPABASE_ANON_KEY',
+    required: true,
+    description: 'Supabase anonymous key (Project Settings > API > anon public)',
+    category: 'supabase'
+  },
   // ImageKit (Optional - for image hosting)
   {
     key: 'IMAGEKIT_PUBLIC_KEY',

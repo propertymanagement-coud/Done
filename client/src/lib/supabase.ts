@@ -26,7 +26,12 @@ async function initializeSupabase() {
     const config = await res.json();
     
     if (config.supabaseUrl && config.supabaseAnonKey) {
-      supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+      supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+        }
+      });
       console.log('[SUPABASE] ✅ Client initialized from backend config');
     } else {
       console.error(
