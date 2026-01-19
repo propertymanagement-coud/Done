@@ -19,28 +19,55 @@ export const initPromise = new Promise<void>((resolve) => {
   initResolve = resolve;
 });
 
-// Initialize Supabase by fetching config from backend
+// Initialize Supabase by checking VITE env vars first (for Netlify), then falling back to backend
 async function initializeSupabase() {
   try {
-    const res = await fetch('/api/config');
-    const config = await res.json();
-    
-    if (config.supabaseUrl && config.supabaseAnonKey) {
-      supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    // Check if VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are available (Netlify)
+    const viteUrl = import.meta.env.VITE_SUPABASE_URL;
+    const viteAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (viteUrl && viteAnonKey) {
+      supabase = createClient(viteUrl, viteAnonKey, {
         auth: {
           persistSession: true,
           autoRefreshToken: true,
+          detectSessionInUrl: true,
+          flowType: 'pkce'
         }
       });
-      console.log('[SUPABASE] ✅ Client initialized from backend config');
-    } else {
-      console.error(
-        '[SUPABASE] Configuration incomplete. Supabase URL and anon key not available.\n' +
-        'Add SUPABASE_URL and SUPABASE_ANON_KEY to Replit Secrets. See SETUP.md for instructions.'
-      );
+      console.log('[SUPABASE] ✅ Client initialized from VITE environment variables');
+      if (initResolve) initResolve();
+      return;
     }
+
+    // Fallback to backend config (Replit)
+    try {
+      const res = await fetch('/api/config');
+      if (res.ok) {
+        const config = await res.json();
+        if (config.supabaseUrl && config.supabaseAnonKey) {
+          supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              detectSessionInUrl: true,
+              flowType: 'pkce'
+            }
+          });
+          console.log('[SUPABASE] ✅ Client initialized from backend config');
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('[SUPABASE] Backend config not reachable, using local env if possible');
+    }
+
+    console.error(
+      '[SUPABASE] Configuration incomplete. Supabase URL and anon key not available.\n' +
+      'Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to Netlify environment variables.'
+    );
   } catch (error) {
-    console.error('[SUPABASE] Failed to fetch config from backend:', error);
+    console.error('[SUPABASE] Failed to initialize Supabase:', error);
   } finally {
     // Always resolve, even if there was an error (allows app to continue)
     if (initResolve) initResolve();
