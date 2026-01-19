@@ -49,6 +49,28 @@ export default function PropertyDetails() {
     queryKey: ['/api/v2/properties', id],
     enabled: !!id && !!match,
     queryFn: async () => {
+      const { supabase, initPromise } = await import('@/lib/supabase');
+      await initPromise;
+      
+      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+        console.log('[PropertyDetails] Fetching directly from Supabase');
+        const { data, error } = await supabase
+          .from('properties')
+          .select('*, owner:users(*)')
+          .eq('id', id)
+          .single();
+        
+        if (error) {
+          console.error('[PropertyDetails] Supabase error:', error);
+          throw error;
+        }
+        
+        return {
+          property: data,
+          owner: data.owner || null
+        };
+      }
+
       const res = await fetch(`/api/v2/properties/${id}`);
       const json = await res.json();
       const propertyInfo = json?.data || json;
