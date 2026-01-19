@@ -52,7 +52,9 @@ export default function PropertyDetails() {
       const { supabase, initPromise } = await import('@/lib/supabase');
       await initPromise;
       
-      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase) {
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '');
+
+      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY && supabase && isUUID) {
         console.log('[PropertyDetails] Fetching directly from Supabase');
         const { data, error } = await supabase
           .from('properties')
