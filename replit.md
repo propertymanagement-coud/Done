@@ -51,7 +51,10 @@ The application is built with a React frontend, an Express.js backend, and a Pos
 - **Drizzle ORM:** Type-safe database queries.
 - **Helmet:** Security headers.
 
-## Recent Changes (January 07, 2026)
+## Recent Changes (January 19, 2026)
+- **Netlify Dashboard Fix:** Refactored `useOwnedProperties` and `useOwnerApplications` to query Supabase directly from the frontend when running on Netlify (bypassing the missing Express proxy). This ensures owners can see their properties and applications regardless of the hosting environment.
+
+## Previous Changes (January 07, 2026)
 - **Login Polish:** Aligned login UI with signup flow using SaaS-style cards, h-12 inputs, and enhanced motion transitions.
 - **Verification UX:** Integrated "Email Pending Verification" handling directly into the login flow with an inline resend button.
 - **Signup Polish:** Implemented SaaS-style signup form with role selection, password strength meter, hover elevations, and smooth transitions.
