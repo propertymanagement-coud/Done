@@ -93,7 +93,7 @@ export default function Login() {
     if (!pendingEmail) return;
     setResending(true);
     try {
-      await resendVerificationEmail();
+      await resendVerificationEmail(pendingEmail);
       toast({
         title: "Verification sent",
         description: `A new verification link has been sent to ${pendingEmail}.`

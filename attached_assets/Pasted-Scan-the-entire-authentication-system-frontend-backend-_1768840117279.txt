@@ -1,0 +1,50 @@
+Scan the entire authentication system (frontend + backend) and identify the exact cause of this issue:
+
+ISSUE DESCRIPTION (REAL USER FLOW):
+1. User signs up successfully.
+2. Verification email is sent.
+3. User does NOT click the verification link immediately.
+4. User returns and tries to log in.
+5. System correctly says: "Email not verified".
+6. User clicks "Resend verification link".
+7. UI still shows the email filled in the input field.
+8. System throws an error:
+   "No email provided for verification".
+
+EXPECTED BEHAVIOR:
+- If the email input is already filled, the resend verification action MUST use that email.
+- The system should NEVER allow a resend request with an undefined or empty email.
+- This flow should work without requiring the user to retype their email.
+
+TASKS:
+1. Trace the resend verification button click handler from UI to backend.
+2. Verify whether the resend function:
+   - Reads email from react-hook-form state
+   - Or relies on stale/local component state
+   - Or sends an empty payload to the backend
+3. Identify whether the resend action:
+   - Bypasses handleSubmit
+   - Uses getValues("email") incorrectly
+   - Or is disconnected from the form entirely
+4. Inspect the backend endpoint that handles resend verification:
+   - Confirm what payload it expects
+   - Confirm how it validates email presence
+5. Identify whether the error originates from:
+   - Frontend logic
+   - Backend validation
+   - Or a mismatch between both
+
+DELIVERABLES:
+- Exact file(s) and function(s) causing the bug
+- Explanation of why the UI shows an email but the request has none
+- A clean, professional fix using best practices
+- Code changes required (frontend and/or backend)
+- UX improvement recommendations to prevent this class of bug permanently
+
+IMPORTANT:
+- Do NOT guess.
+- Do NOT rewrite unrelated auth logic.
+- Do NOT propose workarounds.
+- Only identify the real root cause and fix it properly.
+
+Goal: Make the resend verification flow professional, reliable, and impossible to fail when an email is already present.
