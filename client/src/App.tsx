@@ -57,6 +57,7 @@ import LeaseSigning from "@/pages/lease-signing";
 
 import { StickyNav } from "@/components/sticky-nav";
 import { FloatingCTAButton } from "@/components/floating-cta-button";
+import ScrollToTop from "@/components/scroll-to-top";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -265,6 +266,7 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <FavoritesProvider>
+              <ScrollToTop />
               <Toaster />
               <SonnerToaster richColors position="top-right" />
               <StickyNav />
