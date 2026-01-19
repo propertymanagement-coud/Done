@@ -56,7 +56,7 @@ export default function PropertyDetails() {
         console.log('[PropertyDetails] Fetching directly from Supabase');
         const { data, error } = await supabase
           .from('properties')
-          .select('*, owner:users(*)')
+          .select('*, owner:users!properties_owner_id_fkey(*)')
           .eq('id', id)
           .single();
         
