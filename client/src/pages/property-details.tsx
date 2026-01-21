@@ -480,8 +480,9 @@ export default function PropertyDetails() {
                     </p>
                   </div>
                 </div>
+              </section>
 
-                {/* Location Map */}
+              {/* Location Map */}
               {hasCoordinates && (
                 <section className="space-y-4">
                   <h3 className="text-xl font-bold border-b-2 border-blue-600 w-fit pb-1">Location</h3>
