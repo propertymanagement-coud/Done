@@ -469,7 +469,7 @@ export default function PropertyDetails() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-gray-100 dark:border-gray-800">
                   <div className="space-y-1">
                     <p className="text-xs text-gray-500 font-bold uppercase">Application Fee</p>
-                    <p className="text-xl font-bold">${property.application_fee || "45.00"}</p>
+                    <p className="text-xl font-bold">$50</p>
                   </div>
                   <div className="space-y-1">
                     <p className="text-xs text-gray-500 font-bold uppercase">Available From</p>
@@ -481,28 +481,7 @@ export default function PropertyDetails() {
                   </div>
                 </div>
 
-                {Array.isArray(property.price_history) && property.price_history.length > 0 ? (
-                  <div className="space-y-4 pt-2">
-                    <p className="text-sm font-bold uppercase text-gray-500 tracking-wider flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4" /> History Details
-                    </p>
-                    <div className="space-y-2">
-                      {property.price_history.map((h, i) => (
-                        <div key={i} className="flex justify-between items-center text-sm border-b border-gray-100 dark:border-gray-800 pb-2">
-                          <span className="text-gray-600 dark:text-gray-400 font-medium">
-                            {new Date(h.changedAt).toLocaleDateString()}
-                          </span>
-                          <span className="font-bold">{formatPrice(h.price)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 italic text-sm">No price history available for this listing.</p>
-                )}
-              </section>
-
-              {/* Location Map */}
+                {/* Location Map */}
               {hasCoordinates && (
                 <section className="space-y-4">
                   <h3 className="text-xl font-bold border-b-2 border-blue-600 w-fit pb-1">Location</h3>
