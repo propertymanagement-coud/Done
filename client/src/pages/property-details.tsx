@@ -359,14 +359,12 @@ export default function PropertyDetails() {
                     </span>
                     <span className="text-sm text-gray-500 font-bold uppercase tracking-wider">/ Month</span>
                   </div>
-                  {property.application_fee && (
-                    <div className="flex flex-col border-l border-gray-200 dark:border-gray-800 pl-8">
-                      <span className="text-xl font-bold text-gray-900 dark:text-white">
-                        ${property.application_fee}
-                      </span>
-                      <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">App Fee</span>
-                    </div>
-                  )}
+                  <div className="flex flex-col border-l border-gray-200 dark:border-gray-800 pl-8">
+                    <span className="text-xl font-bold text-gray-900 dark:text-white">
+                      $50
+                    </span>
+                    <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">App Fee</span>
+                  </div>
                   <div className="flex items-center gap-6">
                     <div className="flex flex-col items-center">
                       <span className="text-xl font-bold">{property.bedrooms ?? 0}</span>
@@ -422,20 +420,6 @@ export default function PropertyDetails() {
                       </div>
                     </div>
                   )}
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-blue-600 mt-0.5" />
-                    <div>
-                      <p className="text-xs text-gray-500 font-bold uppercase">Furnished</p>
-                      <p className="font-bold">{property.furnished ? "Yes" : "No"}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-blue-600 mt-0.5" />
-                    <div>
-                      <p className="text-xs text-gray-500 font-bold uppercase">Pets Allowed</p>
-                      <p className="font-bold">{property.pets_allowed ? "Yes" : "No"}</p>
-                    </div>
-                  </div>
                   {property.square_feet && (
                     <div className="flex items-start gap-3">
                       <Ruler className="h-5 w-5 text-blue-600 mt-0.5" />
@@ -480,20 +464,6 @@ export default function PropertyDetails() {
               <section className="space-y-6 bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-bold">Price & Trust</h3>
-                  <div className="flex items-center gap-4">
-                    {property.view_count !== undefined && (
-                      <div className="flex items-center gap-1.5 text-gray-500">
-                        <Eye className="h-4 w-4" />
-                        <span className="text-xs font-bold">{property.view_count} views</span>
-                      </div>
-                    )}
-                    {property.save_count !== undefined && (
-                      <div className="flex items-center gap-1.5 text-gray-500">
-                        <Bookmark className="h-4 w-4" />
-                        <span className="text-xs font-bold">{property.save_count} saves</span>
-                      </div>
-                    )}
-                  </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-gray-100 dark:border-gray-800">
