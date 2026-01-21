@@ -108,7 +108,7 @@ export default function Home() {
   useEffect(() => {
     updateMetaTags({
       title: "Choice Properties - Find Your Perfect Rental Home | Troy, MI Real Estate",
-      description: "Your trusted rental housing partner in Troy, MI. Browse 500+ rental properties, apply online, and find your perfect home. Free property search with instant notifications.",
+      description: "Your trusted rental housing partner in Troy, MI. Browse available rental properties, apply online, and find your perfect home. Free property search with instant notifications.",
       image: "https://choiceproperties.com/og-image.png",
       url: "https://choiceproperties.com"
     });

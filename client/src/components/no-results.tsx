@@ -15,11 +15,11 @@ export function NoResults({ onReset }: NoResultsProps) {
       </div>
       
       <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3" data-testid="text-no-results-title">
-        No Properties Found
+        No Matching Properties
       </h3>
       
       <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-2">
-        We couldn't find any properties matching your search criteria.
+        We couldn't find any properties matching your current filters.
       </p>
       <p className="text-gray-500 dark:text-gray-500 text-center max-w-md mb-8 text-sm">
         Try adjusting your filters or browse all available properties to find your perfect home.

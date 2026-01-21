@@ -30,7 +30,7 @@ export default function Properties() {
   useEffect(() => {
     updateMetaTags({
       title: "Rental Properties for Rent - Search Apartments & Homes | Choice Properties",
-      description: "Search 500+ available rental properties in Troy, MI. Filter by price, bedrooms, bathrooms, and property type. Find and apply for your perfect rental home instantly.",
+      description: "Search available rental properties in Troy, MI. Filter by price, bedrooms, bathrooms, and property type. Find and apply for your perfect rental home instantly.",
       image: "https://choiceproperties.com/og-image.png",
       url: "https://choiceproperties.com/properties"
     });
@@ -490,7 +490,6 @@ export default function Properties() {
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Rental Properties Available</h2>
               <p className="text-gray-600 dark:text-gray-400">Browse and apply to homes in your area</p>
             </div>
-            <span className="text-gray-600 dark:text-gray-400 text-sm font-semibold bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg" data-testid="text-results-count">{filteredProperties.length} results</span>
           </div>
 
           {/* Saved Searches */}
