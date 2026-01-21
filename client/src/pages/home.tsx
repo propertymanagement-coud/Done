@@ -179,10 +179,6 @@ export default function Home() {
                 </p>
               </AnimatedSection>
 
-              <AnimatedSection delay={600}>
-                <TrustBadges variant="hero" className="mt-6" />
-              </AnimatedSection>
-              
               <AnimatedSection delay={800}>
                 <EnhancedPropertySearch />
               </AnimatedSection>
@@ -239,10 +235,10 @@ export default function Home() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { name: "Downtown", properties: 45, image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop" },
-                { name: "Midtown", properties: 38, image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&h=300&fit=crop" },
-                { name: "Suburbs", properties: 62, image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop" },
-                { name: "Waterfront", properties: 28, image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop" },
+                { name: "Downtown", image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop" },
+                { name: "Midtown", image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&h=300&fit=crop" },
+                { name: "Suburbs", image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop" },
+                { name: "Waterfront", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop" },
               ].map((area, idx) => (
                 <AnimatedSection key={idx} delay={idx * 100}>
                   <Link href={`/properties?location=${area.name}`}>
@@ -259,7 +255,6 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       <div className="absolute bottom-4 left-4 text-white">
                         <h3 className="font-bold text-lg">{area.name}</h3>
-                        <p className="text-sm text-white/80">{area.properties} properties</p>
                       </div>
                     </div>
                   </Link>
@@ -327,9 +322,8 @@ export default function Home() {
 
           <div className="container mx-auto px-4 relative z-10">
             <h2 id="stats-heading" className="sr-only">Our Statistics</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 text-center">
               {[
-                { end: 500, suffix: '+', label: 'Verified Properties', desc: 'Handpicked rental homes' },
                 { end: 2000, suffix: '+', label: 'Happy Renters', desc: 'Successfully placed' },
                 { end: 98, suffix: '%', label: 'Approval Rate', desc: 'Industry leading' },
                 { end: 10000, suffix: '+', label: 'Successful Moves', desc: 'Zero disputes' },

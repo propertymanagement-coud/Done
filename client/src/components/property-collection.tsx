@@ -365,9 +365,6 @@ export const PropertyCollection = memo(function PropertyCollection({
       )}
 
       <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span data-testid="text-results-count">
-          {filteredAndSortedProperties.length} {filteredAndSortedProperties.length === 1 ? 'property' : 'properties'} found
-        </span>
         {favorites.length > 0 && (
           <span className="flex items-center gap-1">
             <Heart className="h-4 w-4 text-red-500 fill-red-500" />
