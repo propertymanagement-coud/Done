@@ -361,7 +361,7 @@ export default function PropertyDetails() {
                   </div>
                   <div className="flex flex-col border-l border-gray-200 dark:border-gray-800 pl-8">
                     <span className="text-xl font-bold text-gray-900 dark:text-white">
-                      ${property.applicationFee ? Number(property.applicationFee).toFixed(0) : "45"}
+                      ${property.application_fee ? Number(property.application_fee).toFixed(0) : "45"}
                     </span>
                     <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">App Fee</span>
                   </div>
@@ -487,7 +487,7 @@ export default function PropertyDetails() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-gray-100 dark:border-gray-800">
                   <div className="space-y-1">
                     <p className="text-xs text-gray-500 font-bold uppercase">Application Fee</p>
-                    <p className="text-xl font-bold">${property.applicationFee ? Number(property.applicationFee).toFixed(2) : "45.00"}</p>
+                    <p className="text-xl font-bold">${property.application_fee ? Number(property.application_fee).toFixed(2) : "45.00"}</p>
                   </div>
                   <div className="space-y-1">
                     <p className="text-xs text-gray-500 font-bold uppercase">Available From</p>
