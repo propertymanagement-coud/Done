@@ -482,16 +482,6 @@ export default function PropertyDetails() {
                 </div>
               </section>
 
-              {/* About the Manager */}
-              <section className="space-y-4">
-                <h3 className="text-xl font-bold border-b-2 border-blue-600 w-fit pb-1">About the Property Manager</h3>
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                    {ownerData?.bio || "A dedicated real estate professional committed to providing exceptional housing experiences. Specializing in high-quality rentals and personalized service in the Troy area."}
-                  </p>
-                </div>
-              </section>
-
               {/* Location Map */}
               {hasCoordinates && (
                 <section className="space-y-4">
