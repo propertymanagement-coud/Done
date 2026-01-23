@@ -50,6 +50,8 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     displayEmail: poster.contact.email,
     displayPhone: poster.contact.phone,
     isVerified: poster.is_verified || (poster as any).verified_status !== 'none',
+    isOwnershipVerified: (poster as any).is_ownership_verified || false,
+    isAgencyBacked: (poster as any).is_agency_backed || false,
     agency: poster.agency
   } : owner ? {
     fullName: isCurrentUserOwner ? (user.full_name || owner.full_name) : (owner.full_name || "Property Owner"),
@@ -58,6 +60,8 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     displayEmail: owner.display_email || owner.email,
     displayPhone: owner.display_phone,
     isVerified: owner.is_verified || (owner as any).verified_status !== 'none',
+    isOwnershipVerified: (owner as any).is_ownership_verified || false,
+    isAgencyBacked: (owner as any).is_agency_backed || false,
     agency: null
   } : null;
 
@@ -71,6 +75,7 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     .substring(0, 2);
 
   const verificationLabel = data.roleLabel.includes('Agent') ? 'Verified Agent' : 'Verified Owner';
+  const roleType = data.roleLabel.includes('Agent') || data.roleLabel.includes('Manager') ? 'professional' : 'owner';
 
   return (
     <div className="flex items-center justify-between gap-4 py-3 group rounded-xl">
@@ -82,18 +87,30 @@ export function PostedBy({ owner, poster }: PostedByProps) {
               {initials || "O"}
             </AvatarFallback>
           </Avatar>
-          {data.isVerified && (
+          {(data.isVerified || data.isOwnershipVerified || data.isAgencyBacked) && (
             <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
               <ShieldCheck className="h-4 w-4 text-blue-600 fill-blue-50" />
             </div>
           )}
         </div>
         <div className="flex flex-col">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-base font-bold text-foreground leading-tight">
               {data.agency?.name || data.fullName}
             </span>
-            {data.isVerified && (
+            {data.isOwnershipVerified && roleType === 'owner' && (
+              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-green-50 text-[10px] font-bold text-green-700 uppercase tracking-tight border border-green-100 shadow-sm">
+                <ShieldCheck className="h-2.5 w-2.5" />
+                Ownership Verified
+              </div>
+            )}
+            {data.isAgencyBacked && roleType === 'professional' && (
+              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-purple-50 text-[10px] font-bold text-purple-700 uppercase tracking-tight border border-purple-100 shadow-sm">
+                <ShieldCheck className="h-2.5 w-2.5" />
+                Agency Backed
+              </div>
+            )}
+            {data.isVerified && !data.isOwnershipVerified && !data.isAgencyBacked && (
               <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-blue-50 text-[10px] font-bold text-blue-700 uppercase tracking-tight border border-blue-100 shadow-sm">
                 <ShieldCheck className="h-2.5 w-2.5" />
                 {verificationLabel}

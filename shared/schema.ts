@@ -48,6 +48,8 @@ export const users = pgTable("users", {
   location: text("location"),
   isManagedProfile: boolean("is_managed_profile").default(false),
   verifiedStatus: text("verified_status").default("none"), // none, identity_verified, license_verified, agency_verified
+  isOwnershipVerified: boolean("is_ownership_verified").default(false),
+  isAgencyBacked: boolean("is_agency_backed").default(false),
   managedBy: uuid("managed_by"),
   displayEmail: text("display_email"),
   displayPhone: text("display_phone"),
