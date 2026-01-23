@@ -74,8 +74,8 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     .toUpperCase()
     .substring(0, 2);
 
-  const verificationLabel = data.roleLabel.includes('Agent') ? 'Verified Agent' : 'Verified Owner';
-  const roleType = data.roleLabel.includes('Agent') || data.roleLabel.includes('Manager') ? 'professional' : 'owner';
+  const verificationLabel = data.roleLabel === 'Property Owner' ? 'Verified Property Owner' : 'Verified Professional';
+  const roleType = data.roleLabel === 'Property Owner' ? 'owner' : 'professional';
 
   return (
     <div className="flex items-center justify-between gap-4 py-3 group rounded-xl">
