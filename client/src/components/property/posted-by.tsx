@@ -49,7 +49,7 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     roleLabel: poster.role_label,
     displayEmail: poster.contact.email,
     displayPhone: poster.contact.phone,
-    isVerified: poster.is_verified,
+    isVerified: poster.is_verified || (poster as any).verified_status !== 'none',
     agency: poster.agency
   } : owner ? {
     fullName: isCurrentUserOwner ? (user.full_name || owner.full_name) : (owner.full_name || "Property Owner"),
@@ -57,7 +57,7 @@ export function PostedBy({ owner, poster }: PostedByProps) {
     roleLabel: owner.role === 'agent' ? 'Listing Agent' : owner.role === 'property_manager' ? 'Property Manager' : 'Property Owner',
     displayEmail: owner.display_email || owner.email,
     displayPhone: owner.display_phone,
-    isVerified: owner.is_verified,
+    isVerified: owner.is_verified || (owner as any).verified_status !== 'none',
     agency: null
   } : null;
 

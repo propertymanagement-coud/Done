@@ -47,6 +47,7 @@ export const users = pgTable("users", {
   reviewCount: integer("review_count").default(0),
   location: text("location"),
   isManagedProfile: boolean("is_managed_profile").default(false),
+  verifiedStatus: text("verified_status").default("none"), // none, identity_verified, license_verified, agency_verified
   managedBy: uuid("managed_by"),
   displayEmail: text("display_email"),
   displayPhone: text("display_phone"),
