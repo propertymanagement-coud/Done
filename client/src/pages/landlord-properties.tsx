@@ -117,7 +117,7 @@ export default function LandlordProperties() {
       amenities: [],
       utilitiesIncluded: [],
       images: [],
-      applicationFee: 45,
+      applicationFee: undefined,
       availableFrom: null,
     },
   });
@@ -176,7 +176,7 @@ export default function LandlordProperties() {
       amenities: Array.isArray(property.amenities) ? property.amenities : [],
       utilitiesIncluded: Array.isArray(property.utilitiesIncluded) ? property.utilitiesIncluded : [],
       images: Array.isArray(property.images) ? property.images : [],
-      applicationFee: property.application_fee ? parseFloat(property.application_fee) : 45,
+      applicationFee: property.application_fee ? parseFloat(property.application_fee) : undefined,
       availableFrom: property.available_from ? property.available_from : null,
       listing_agent_id: property.listing_agent_id || null,
     };

@@ -125,7 +125,7 @@ export const properties = pgTable("properties", {
   soldPrice: decimal("sold_price", { precision: 12, scale: 2 }),
   scheduledPublishAt: timestamp("scheduled_publish_at"),
   addressVerified: boolean("address_verified").default(false),
-  applicationFee: decimal("application_fee", { precision: 8, scale: 2 }).default("45.00"),
+  applicationFee: decimal("application_fee", { precision: 8, scale: 2 }),
   availableFrom: date("available_from"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
